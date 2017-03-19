@@ -2,7 +2,7 @@
 # Import necessary modules
 import Adafruit_CharLCD as LCD
 from time import sleep
-from subprocess
+import subprocess
 import os
 
 # Initialize variable
