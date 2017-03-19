@@ -112,7 +112,7 @@ path = base_path
 if media is not None: path += '/' + media
 chdir(path)
 
-# Navigates through the usb drive using the LCD inputs
+# Navigates through the usb drive using the LCD buttons
 while True:
     if lcd.is_pressed(LCD.LEFT):
         if os.getcwd() == base_path + media: exit_program()
