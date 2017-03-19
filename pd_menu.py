@@ -15,7 +15,7 @@ opened_pd = None
 # Initialize the LCD using the pins
 lcd = LCD.Adafruit_CharLCDPlate()
 
-# Create arrow char for folder
+# Create special char better description
 lcd.create_char(1, [8, 12, 10, 9, 10, 12, 8,  0]) # right arrow
 lcd.create_char(2, [0, 1, 3, 22, 28, 8, 0, 0])    # Check mark
 
