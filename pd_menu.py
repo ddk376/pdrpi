@@ -68,6 +68,7 @@ def open_puredata_file(file):
    display(file)
 
 def close_puredata_file():
+   """ Closes puredata file """
    opened_pd.kill()
                                                                      
 def chdir(path):
