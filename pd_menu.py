@@ -59,7 +59,7 @@ def display(file):
 def open_puredata_file(file):
    """ Closes current puredata file and opens puredata file given in the argument"""
    global opened_pd
-   if opened_pd is not none: close_puredata_file()
+   if opened_pd is not None: close_puredata_file()
    lcd.clear()
    lcd.message("Opening " + file)
    sleep(2.0)
