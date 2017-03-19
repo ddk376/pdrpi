@@ -116,9 +116,9 @@ chdir(path)
 # Navigates through the usb drive using the LCD buttons
 while True:
     if lcd.is_pressed(LCD.LEFT):
-        if os.getcwd() == base_path + media: exit_program()
+        if os.getcwd() == base_path + '/' + media: exit_program()
         else: 
-            path  = '/'.join(pwd.split('/')[:-1])
+            path  = '/'.join(pwd.split('/')[:-1])  # path of one level up from current directory
             chdir(path)
     elif lcd.is_pressed(LCD.RIGHT):
         if os.path.isdir(pwd + '/' + pd_files[pos]): chdir(pwd + '/' + pd_files[pos])
