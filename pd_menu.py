@@ -2,7 +2,7 @@
 # Import necessary modules
 import Adafruit_CharLCD as LCD
 from time import sleep
-from subprocess import call
+from subprocess
 import os
 
 # Initialize variable
@@ -10,6 +10,7 @@ base_path = '/media/pi'
 pd_files  = None
 pos       = 0
 media     = None
+opened_pd = None
 
 # Initialize the LCD using the pins
 lcd = LCD.Adafruit_CharLCDPlate()
@@ -56,13 +57,19 @@ def display(file):
     lcd.message(file_or_dir)
 
 def open_puredata_file(file):
-   """ Opens puredata file"""
+   """ Closes current puredata file and opens puredata file given in the argument"""
+   global opened_pd
+   if opened_pd is not none: close_puredata_file()
    lcd.clear()
    lcd.message("Opening " + file)
    sleep(2.0)
-   call("puredata", "-nogui", pwd + '/' + file )
+   opened_pd = subprocess.Popen("exec puredata -nogui " + pwd + '/' + file, stdout=subproecess.PIPE, shell=True)
+   #call("puredata", "-nogui", pwd + '/' + file )
    display(file)
 
+def close_puredata_file():
+   opened_pd.kill()
+                                                                     
 def chdir(path):
     """ Changes directory """
     global pwd, pd_files, pos
