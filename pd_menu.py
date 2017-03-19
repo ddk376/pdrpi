@@ -114,7 +114,7 @@ while True:
             chdir(path)
     elif lcd.is_pressed(LCD.RIGHT):
         if os.path.isdir(pwd + '/' + pd_files[pos]): chdir(pwd + '/' + pd_files[pos])
-        else:                                        open_puredata(pd_files[pos])
+        else:                                        open_puredata_file(pd_files[pos])
     elif lcd.is_pressed(LCD.UP):
         if pos != 0:
             pos = pos -1
@@ -125,7 +125,7 @@ while True:
              display(pd_files[pos])
     else:
        if os.path.isdir(pwd + '/' + pd_files[pos] ): chdir(pwd + '/' + pd_files[pos])
-       else:                                         open_puredata(pd_ls[pos])   
+       else:                                         open_puredata_file(pd_ls[pos])   
 
 lcd.clear()
 lcd.set_color(0,0,0)
