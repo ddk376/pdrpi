@@ -63,7 +63,7 @@ def open_puredata_file(file):
    lcd.clear()
    lcd.message("Opening " + file)
    sleep(2.0)
-   opened_pd = subprocess.Popen("exec puredata -nogui " + pwd + '/' + file, stdout=subproecess.PIPE, shell=True)
+   opened_pd = subprocess.Popen("exec puredata -nogui " + pwd + '/' + file, stdout=subprocess.PIPE, shell=True)
    #call("puredata", "-nogui", pwd + '/' + file )
    display(file)
 
