@@ -22,43 +22,6 @@ lcd.set_color(0.0, 1.0, 0.0)
 lcd.create_char(1, [8, 12, 10, 9, 10, 12, 8,  0]) # right arrow
 lcd.create_char(2, [0, 1, 3, 22, 28, 8, 0, 0])    # Check mark
 
-# Select USB drive
-lcd.clear()
-lcd.message('Locating USB\ndrives...')
-sleep(1.0)
-medias = os.listdir(base_path)
-medias.remove('SETTINGS')                      # We do not want this to show up as part of available medias to choose from
-
-# Exit if no USB is present. Sets media to USB if only one USB is present and informs user to select a USB if multiple USB are present
-if len(medias) > 1:
-    message("1", 2.0)
-    message('Please select\nUSB...', 1.0)
-    pos = 0
-    while True:
-        if lcd.is_pressed(LCD.UP):
-            if pos > 0:
-                pos -= 1
-                lcd.clear()
-                lcd.message(medias[pos])
-        elif lcd.is_pressed(LCD.DOWN):
-            if pos < len(medias) - 1:
-                pos += 1
-                lcd.clear()
-                lcd.message(medias[pos])
-        elif lcd.is_pressed(LCD.LEFT): exit_program()
-        else:
-            media = medias[pos]
-            break
-elif len(medias) == 1:
-    message('2')
-    media = medias[0]
-else:
-    message('No USB Found...')
-    message('Exiting...')
-    clear(True)
-
-assert False
-
 # Functions to clean up control flow
 def message(msg, time = 1.0):
     """wrapper for lcd.message() """
@@ -127,6 +90,43 @@ def exit_program():
                lcd.set_color(0,0,0)
                break
            else: break
+
+# Select USB drive
+lcd.clear()
+lcd.message('Locating USB\ndrives...')
+sleep(1.0)
+medias = os.listdir(base_path)
+medias.remove('SETTINGS')                      # We do not want this to show up as part of available medias to choose from
+
+# Exit if no USB is present. Sets media to USB if only one USB is present and informs user to select a USB if multiple USB are present
+if len(medias) > 1:
+    message("1", 2.0)
+    message('Please select\nUSB...', 1.0)
+    pos = 0
+    while True:
+        if lcd.is_pressed(LCD.UP):
+            if pos > 0:
+                pos -= 1
+                lcd.clear()
+                lcd.message(medias[pos])
+        elif lcd.is_pressed(LCD.DOWN):
+            if pos < len(medias) - 1:
+                pos += 1
+                lcd.clear()
+                lcd.message(medias[pos])
+        elif lcd.is_pressed(LCD.LEFT): exit_program()
+        else:
+            media = medias[pos]
+            break
+elif len(medias) == 1:
+    message('2')
+    media = medias[0]
+else:
+    message('No USB Found...')
+    message('Exiting...')
+    clear(True)
+
+assert False
 
 lcd.clear()
 
