@@ -90,6 +90,7 @@ def exit_program():
                lcd.set_color(0,0,0)
                break
            else: break
+       else: pass
 
 # Select USB drive
 lcd.clear()
@@ -115,11 +116,11 @@ if len(medias) > 1:
                 lcd.clear()
                 lcd.message(medias[pos])
         elif lcd.is_pressed(LCD.LEFT): exit_program()
-        else:
+        elif lcd.is_pressed(LCD.RIGHT) or lcd.is_pressed(LCD.SELECT):
             media = medias[pos]
             break
+        else: pass
 elif len(medias) == 1:
-    message('2')
     media = medias[0]
 else:
     message('No USB Found...')
