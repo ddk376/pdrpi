@@ -37,16 +37,16 @@ def clear(exiting = False):
     lcd.set_color(0,0,0)
     if exiting: exit()
 
-def get_files(pwd):
+def get_files():
     """  Returns a list of '.pd' files and directories """
-    return [ file for file in os.listdir(pwd) if file[0] != '.' and ((file[-3:]) == '.pd' or os.path.isdir(file))]
+    return [ file for file in os.listdir('.') if file[0] != '.' and ((file[-3:]) == '.pd' or os.path.isdir(file))]
 
 def display(file):
     """ Display the puredata file or a directory. If a directory is displayed a right arrow is also displayed """
     lcd.clear()
     display = file
     if len(file) > 16: display = file[0:16] + "\n" + file[16:] 
-    if os.path.isdir(pwd + '/' + pd_files[pos]):
+    if os.path.isdir(pd_files[pos]):
         display += " \x01"
     lcd.message(display)
 
@@ -55,7 +55,7 @@ def open_puredata_file(file):
    global opened_pd
    if opened_pd is not None: close_puredata_file()
    message("Opening " + file, 2.0)
-   opened_pd = subprocess.Popen("exec puredata -nogui " + pwd + '/' + file, stdout=subprocess.PIPE, shell=True)
+   opened_pd = subprocess.Popen("exec puredata -nogui " + file, stdout=subprocess.PIPE, shell=True)
    #call("puredata", "-nogui", pwd + '/' + file )
    display(file)
 
@@ -63,12 +63,11 @@ def close_puredata_file():
    """ Closes puredata file """
    opened_pd.kill()
                                                                      
-def chdir(path):
+def chdir(dir):
     """ Changes directory """
-    global pwd, pd_files, pos
-    os.chdir(path)
-    pwd = path
-    pd_files = get_files(pwd)
+    global pd_files, pos
+    os.chdir(dir)
+    pd_files = get_files()
     pos = 0
     lcd.clear()
     if len(pd_files) == 0: lcd.message("\x02 No files")
@@ -80,13 +79,16 @@ def exit_program():
     ans = True
     while True:
        if lcd.is_pressed(LCD.RIGHT):
+           message('1',2.0)
            ans = False
            message('Exit program?\nYes   No \x03')
        elif lcd.is_pressed(LCD.LEFT):
+           message('2', 2.0)
            ans = True
            message('Exit program?\nYes \x03  No')
        elif lcd.is_pressed(LCD.SELECT):
-           if ans: clear()
+           if ans: clear(True)
+           chdir('.')
            break
 
 # Select USB drive
@@ -108,9 +110,10 @@ if len(medias) > 1:
                 pos += 1
                 message(medias[pos])
         elif lcd.is_pressed(LCD.LEFT): exit_program()
-        else:
+        elif lcd.is_pressed(LCD.RIGHT) or lcd.is_pressed(LCD.SELECT):
             media = medias[pos]
             break
+        else: pass
 elif len(medias) == 1:
     media = medias[0]
     message("Entering \n" + media, 1.0)
@@ -119,7 +122,7 @@ else:
     message('Exiting...')
     clear(True)
 
-#lcd.clear()
+lcd.clear()
 
 # Gets all the files to choose from
 path = base_path + '/' + media
@@ -128,11 +131,9 @@ chdir(path)
 # Navigates through the usb drive using the LCD buttons
 while True:
     if lcd.is_pressed(LCD.LEFT):
-        message(os.getcwd(), 1.0)
-        if os.getcwd() == base_path + '/' + media: exit_program()
-        else: 
-            path  = '/'.join(pwd.split('/')[:-1])  # path of one level up from current directory
-            chdir(path)
+        sleep(0.5)
+        if os.getcwd() == base_path+ '/'+ media: exit_program()
+        else: chdir('..')  # path of one level up from current directory
     elif lcd.is_pressed(LCD.UP):
         if pos != 0:
             pos -= 1
@@ -142,8 +143,11 @@ while True:
             pos += 1
             display(pd_files[pos])
     elif lcd.is_pressed(LCD.RIGHT) or lcd.is_pressed(LCD.SELECT):
-        if os.path.isdir(pwd + '/' + pd_files[pos]): chdir(pwd + '/' + pd_files[pos])
-        else:                                        open_puredata_file(pd_files[pos])   
+        if os.path.isdir(pd_files[pos]):
+	    chdir(pd_files[pos])
+            sleep(2.0)
+        else: open_puredata_file(pd_files[pos])
+    else: pass   
 
 clear(True)
 
