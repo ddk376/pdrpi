@@ -55,8 +55,9 @@ def open_puredata_file(file):
    global opened_pd
    if opened_pd is not None: close_puredata_file()
    message("Opening " + file, 2.0)
-   opened_pd = subprocess.Popen("exec puredata -nogui " + file, stdout=subprocess.PIPE, shell=True)
-   #call("puredata", "-nogui", pwd + '/' + file )
+   #opened_pd = subprocess.Popen("exec /usr/bin/pd -noadc -alsa " + file, shell=True)
+   os.system('/usr/bin/pd -noadc -alsa ' + file)
+   message(str(opened_pd), 2.0)
    display(file)
 
 def close_puredata_file():
@@ -132,7 +133,7 @@ chdir(path)
 while True:
     if lcd.is_pressed(LCD.LEFT):
         sleep(0.5)
-        if os.getcwd() == base_path+ '/'+ media: exit_program()
+        if os.getcwd() == base_path+ '/'+ media: pass
         else: chdir('..')  # path of one level up from current directory
     elif lcd.is_pressed(LCD.UP):
         if pos != 0:
