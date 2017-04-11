@@ -80,11 +80,9 @@ def exit_program():
     ans = True
     while True:
        if lcd.is_pressed(LCD.RIGHT):
-           message('1',2.0)
            ans = False
            message('Exit program?\nYes   No \x03')
        elif lcd.is_pressed(LCD.LEFT):
-           message('2', 2.0)
            ans = True
            message('Exit program?\nYes \x03  No')
        elif lcd.is_pressed(LCD.SELECT):
